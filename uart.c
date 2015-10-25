@@ -291,10 +291,11 @@ Purpose:  called when the UART has received a character
     }else{
         /* store new index */
         UART_RxHead = tmphead;
+
         /* store received data in buffer */
         UART_RxBuf[tmphead] = data;
     }
-    UART_LastRxError |= lastRxError;   
+    UART_LastRxError |= lastRxError;
 }
 
 
@@ -407,7 +408,7 @@ Returns:  lower byte:  received byte from ringbuffer
 unsigned int uart_getc(void)
 {    
     unsigned char tmptail;
-    unsigned char data;
+    unsigned int data;
 
 
     if ( UART_RxHead == UART_RxTail ) {
@@ -420,9 +421,11 @@ unsigned int uart_getc(void)
     
     /* get data from receive buffer */
     data = UART_RxBuf[tmptail];
-    
+
     data = (UART_LastRxError << 8) + data;
     UART_LastRxError = 0;
+
+
     return data;
 
 }/* uart_getc */
